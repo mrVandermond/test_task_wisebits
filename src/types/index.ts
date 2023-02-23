@@ -12,6 +12,7 @@ export type FormattedCoffee = Omit<Coffee, 'notes'> & {
   notes: string[];
 }
 
-export type CardCoffee = FormattedCoffee & {
-  pictureUrl: string;
+export interface LoadingState {
+  cardLoading: boolean;
+  pictureLoading: boolean;
 }

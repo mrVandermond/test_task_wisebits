@@ -1,57 +1,71 @@
 <div class="wrapper">
     <CoffeeList list={list} />
 
-    {#if loading}
-        <CoffeeStub />
-    {/if}
-
     <Button
-        disabled={loading}
         on:click={fetchCoffeeItem}
     />
 </div>
 
 <script lang="ts">
-import type { CardCoffee, FormattedCoffee } from '@/types';
+import type { FormattedCoffee } from '@/types';
 import { onMount } from 'svelte';
-import { fetchKindOfCoffee, fetchPicture } from '@/api';
+import { fetchKindOfCoffee } from '@/api';
 
 import Button from '@/components/Button.svelte';
 import CoffeeList from '@/components/CoffeeList.svelte';
-import CoffeeStub from '@/components/CoffeeStub.svelte';
+import { loadingState } from '@/stores';
 
-let list: CardCoffee[] = [];
-let loading = false;
+let list: FormattedCoffee[] = [];
+let timerId = null;
 
 onMount(() => {
     fetchCoffeeItem();
+    planFetch();
 });
 
-async function fetchCoffeeItem(): Promise<CardCoffee> {
-  loading = true;
+function resetTimeout(): void {
+  if (!timerId) return;
 
-  const [coffee, picture]: [FormattedCoffee, string] = await Promise.all([
-    fetchKindOfCoffee(),
-    fetchPicture(),
-  ]);
+  clearTimeout(timerId);
+  timerId = null;
+}
 
-  loading = false;
+function planFetch(): void {
+  if (timerId) return;
 
-  list.push({
-    ...coffee,
-    pictureUrl: picture,
-  });
+  timerId = setTimeout(fetchCoffeeItem, 30000);
+}
+
+function updateLoadingState(value: boolean) {
+  loadingState.update(state => ({
+    cardLoading: value,
+    pictureLoading: state.pictureLoading,
+  }));
+}
+
+async function fetchCoffeeItem(): Promise<void> {
+  resetTimeout();
+
+  updateLoadingState(true);
+
+  const coffee = await fetchKindOfCoffee();
+
+  updateLoadingState(false);
+
+  list.push(coffee);
   list = list;
+
+  planFetch();
 }
 </script>
 
 <style lang="less">
-    .wrapper {
-      width: 320px;
-      margin: auto;
-      padding: 10px 0;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+.wrapper {
+  width: 320px;
+  margin: auto;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 </style>
