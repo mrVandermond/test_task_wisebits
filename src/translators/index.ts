@@ -6,3 +6,7 @@ export function translateCoffee(value: Coffee): FormattedCoffee {
     notes: value.notes.split(', '),
   };
 }
+
+export function translatePicture(value: Blob): string {
+  return URL.createObjectURL(value);
+}
