@@ -11,3 +11,7 @@ export interface Coffee {
 export type FormattedCoffee = Omit<Coffee, 'notes'> & {
   notes: string[];
 }
+
+export type CardCoffee = FormattedCoffee & {
+  pictureUrl: string;
+}

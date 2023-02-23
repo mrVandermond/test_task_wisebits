@@ -32,6 +32,7 @@ module.exports = {
           options: {
             emitCss: true,
             preprocess: SveltePreprocess(),
+            onwarn: () => {},
           }
         }
       },

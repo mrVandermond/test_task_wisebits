@@ -2,6 +2,7 @@
 
 <style lang="less">
     .button {
+      display: block;
       width: 40px;
       height: 40px;
       border: none;
