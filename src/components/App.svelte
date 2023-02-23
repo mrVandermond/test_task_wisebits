@@ -1,32 +1,41 @@
 <div class="wrapper">
-    <CoffeeList
-        list={list}
-    />
+    <CoffeeList list={list} />
+
+    {#if loading}
+        <CoffeeStub />
+    {/if}
 
     <Button
+        disabled={loading}
         on:click={fetchCoffeeItem}
-        class="wrapper__button"
     />
 </div>
 
 <script lang="ts">
-import Button from '@/components/Button.svelte';
-import CoffeeList from '@/components/CoffeeList.svelte';
 import type { CardCoffee, FormattedCoffee } from '@/types';
 import { onMount } from 'svelte';
 import { fetchKindOfCoffee, fetchPicture } from '@/api';
 
+import Button from '@/components/Button.svelte';
+import CoffeeList from '@/components/CoffeeList.svelte';
+import CoffeeStub from '@/components/CoffeeStub.svelte';
+
 let list: CardCoffee[] = [];
+let loading = false;
 
 onMount(() => {
     fetchCoffeeItem();
 });
 
 async function fetchCoffeeItem(): Promise<CardCoffee> {
+  loading = true;
+
   const [coffee, picture]: [FormattedCoffee, string] = await Promise.all([
     fetchKindOfCoffee(),
     fetchPicture(),
   ]);
+
+  loading = false;
 
   list.push({
     ...coffee,
@@ -40,13 +49,9 @@ async function fetchCoffeeItem(): Promise<CardCoffee> {
     .wrapper {
       width: 320px;
       margin: auto;
-      padding: 10px 15px;
+      padding: 10px 0;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-
-      &__button {
-        margin-top: 15px;
-      }
     }
 </style>

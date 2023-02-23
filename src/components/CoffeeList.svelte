@@ -1,8 +1,7 @@
-<div class="coffee-list">
-    {#each list as item (item.id)}
+<div>
+    {#each list as item, index (item.id)}
         <CoffeeItem
-            bind:coffee={item}
-            class="coffee-list__item"
+            coffee={item}
         />
     {/each}
 </div>
@@ -13,9 +12,3 @@
 
     export let list: CardCoffee[] = [];
 </script>
-
-<style lang="less">
-.coffee-list__item {
-  margin-top: 15px;
-}
-</style>

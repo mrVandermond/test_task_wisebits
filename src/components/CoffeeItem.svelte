@@ -2,7 +2,7 @@
     <div class="coffee__picture-wrapper">
         <img
             class="coffee__picture"
-            src="{coffee.pictureUrl}"
+            src={coffee.pictureUrl}
             alt="coffee card"
         >
     </div>
@@ -36,6 +36,8 @@
       height: 400px;
       overflow: hidden;
       position: relative;
+      border-radius: 10px;
+      margin-bottom: 15px;
 
       &__picture-wrapper {
         position: relative;
@@ -71,7 +73,8 @@
       }
 
       &__name,
-      &__variety {
+      &__variety,
+      &__notes {
         margin-top: 10px;
       }
 
@@ -81,6 +84,7 @@
 
       &__name {
         font-size: 16px;
+        font-weight: 700;
         color: black;
       }
 

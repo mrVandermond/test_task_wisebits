@@ -1,4 +1,12 @@
-<button class="button" on:click>+</button>
+<button
+    on:click
+    class="button"
+    disabled={disabled}
+>+</button>
+
+<script lang="ts">
+    export let disabled = false;
+</script>
 
 <style lang="less">
     .button {
